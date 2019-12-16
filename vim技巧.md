@@ -243,7 +243,7 @@ c
 <C-u> 	删至行首
 有些时候我们想粘贴之前就删除的数据（不是最新删除的数据），这时候使用p明显是不行的了，因为p只粘贴最新的删除或者复制的数据，那么之前删除的数据就消失了么？其实不然，Vim将会为我们保存九次删除操作的数据，只要在插入模式下键入<C-r>{register}就可以粘贴register中的数据了，在普通模式下为"{register}p
 
-<++>
+
 d 结合/命令进行删除   d/word<CR>
 Ctrl + r 重做（Redo），即撤销的撤销。
 * 和 # 的快速查找 查找光标处的单词
@@ -280,3 +280,58 @@ vi'、vi"、vi(、vi[、vi{、vi< - 分别选中这些配对标点符号中的�
 ```
 ### vim如何在其他位置上直接存储
 [vim的存储方法](https://stackoverflow.com/questions/1636297/how-to-change-the-folder-path-for-swp-files-in-vim) 
+
+
+###  如何插入编号
+录制一个宏 让它具备 插入编号的功能
+
+who are you
+i am five
+how old are you
+i am sxx
+
+1) who are you
+2) i am five
+3) how old are you
+4) i am sxx
+
+```
+1. 第一步我们要定义一个变量 i     ======== :let i=1
+2. 开始录制宏                     ======== qa
+3. 步骤                           ======== I<C-r>=i<CR>) <CR> 
+4. 使i递增                        ======== :let i+=1
+5. 结束录制                       ======== q
+6. 选中要执行宏的每一行 在可视模式下   === :'<,'> normal @a
+```
+## 合并ex命令
+：1，3d|s/thier/theri/
+
+
+
+
+
+### 替换
+&  匹配之前匹配的文本 
+：%/nihao/&，penyou/
+
+：s/.*/(&)/  给所有行加上（）
+
+ \u第一个字母变大写\U 全部大写
+
+:g/mg\([ira]\)box/s//mg\1square/g
+<++>
+这个要好好讲一讲  先运用查找模式把我们想要的找到 我们想要的行然后再替换就是 
+magibox routine
+magrbox routine
+magabox routine 
+替换成 
+magisquare routine
+magrsquare routine
+magasquare routine 
+
+### 文件中导入其他文件
+如正在编辑/home/www.phpernote.com/index.tpl，想导入同目录下的head.tpl文件中的内容，则可以在命令行模式下输入：
+r ./head.tpl
+或者
+r /home/www.phpernote.com/head.tpl
+这样head.tpl文件的内容就添加到当前文件里了。
